@@ -13,6 +13,7 @@ django-rest-framework = "*"
 djangorestframework = "*"
 mysqlclient = "*"
 djangorestframework-jwt = "*"
+requests = "*"
 
 [requires]
 python_version = "3.6"
