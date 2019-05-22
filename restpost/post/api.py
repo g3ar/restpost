@@ -1,4 +1,7 @@
+import short_url
+
 from django.db.utils import IntegrityError
+from django.urls import reverse
 from rest_framework import serializers, viewsets, permissions
 
 from post.models import Post, Like
@@ -24,12 +27,19 @@ class PostSerializer(serializers.ModelSerializer):
         source='get_likes_count',
         read_only=True
     )
+    short_url = serializers.SerializerMethodField()
     author = serializers.StringRelatedField(read_only=True)
 
     class Meta:
         model = Post
-        fields = ('id', 'url', 'title', 'text', 'author', 'created', 'likes')
+        fields = ('id', 'url', 'title', 'text', 'author', 'created', 'likes',
+                  'short_url')
         read_only_fields = ('created', 'id')
+
+    def get_short_url(self, obj):
+        return self.context['request'].build_absolute_uri(reverse('short_url', kwargs={
+            'hash': short_url.encode_url(obj.pk)
+        }))
 
 
 class PostViewSet(AutopopulateAuthorMixin, viewsets.ModelViewSet):

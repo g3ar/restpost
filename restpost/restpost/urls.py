@@ -10,6 +10,7 @@ from rest_framework_jwt.views import (
 
 from restpost.api import UserViewSet, SignupUserView
 from post.api import PostViewSet, LikeViewSet
+from post.views import short_url_reverse
 
 
 router = routers.DefaultRouter()
@@ -25,4 +26,5 @@ urlpatterns = [
     url('jwt/get/', obtain_jwt_token),
     url('jwt/refresh/', refresh_jwt_token),
     url('jwt/verify/', verify_jwt_token),
+    url(r'short/(?P<hash>[\w\-]+)/', short_url_reverse, name='short_url'),
 ]
